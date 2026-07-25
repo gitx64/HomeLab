@@ -18,7 +18,7 @@ A self-hosted lab environment for development, entertainment, and learning syste
 - Ports 8080, 3000, 8081, 9090, and 9100 available
 
 ## Quick Start
-
+You can fork this repository and remove the .git folder for your personal use and keep it in your repository.
 ```bash
 git clone https://github.com/gitx64/HomeLab.git
 cd HomeLab
