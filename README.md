@@ -21,7 +21,7 @@ A self-hosted lab environment for development, entertainment, and learning syste
 
 ```bash
 git clone https://github.com/gitx64/HomeLab.git
-cd docker-compose-sysadmin-lab
+cd HomeLab
 sudo docker compose up -d
 ```
 
@@ -48,7 +48,7 @@ sudo docker compose down -v
 ## Project Structure
 
 ```
-docker-compose-sysadmin-lab/
+HomeLab/
 ├── compose.yaml                         # Service definitions
 ├── nginx/
 │   ├── nginx.conf                       # Reverse proxy configuration
