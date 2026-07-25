@@ -11,6 +11,17 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/html/:/usr/share/nginx/html:ro
+    depends_on:
+      grafana:
+        condition: service_healthy
+      prometheus:
+        condition: service_healthy     
+    healthcheck:
+        test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/"]
+        interval: 30s
+        timeout: 5s
+        retries: 3
+        start_period: 10s
 
   grafana:
     image: grafana/grafana-oss:latest
@@ -26,7 +37,7 @@ services:
     restart: unless-stopped
 
     environment:
-      - GF_SERVER_ROOT_URL=http://localhost:3000/
+      - GF_SERVER_ROOT_URL=http://localhost:8080/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
     networks:
       - monitoring
@@ -40,6 +51,7 @@ services:
     container_name: prometheus
 
     healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:9090/-/healthy"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -51,7 +63,8 @@ services:
     ports:
       - "9090:9090"
     command:
-      - "--web.external-url=http://localhost:9090/prometheus/"
+      - "--config.file=/etc/prometheus/prometheus.yaml"
+      - "--web.external-url=http://localhost:8080/prometheus/"
       - "--web.route-prefix=/"
     volumes:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
