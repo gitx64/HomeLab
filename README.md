@@ -20,7 +20,7 @@ A self-hosted lab environment for development, entertainment, and learning syste
 ## Quick Start
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/gitx64/HomeLab.git
 cd docker-compose-sysadmin-lab
 sudo docker compose up -d
 ```
@@ -32,10 +32,6 @@ Open your browser:
 | `http://localhost:8080` | Homelab Dashboard |
 | `http://localhost:8080/grafana/` | Grafana (via Nginx) |
 | `http://localhost:8080/prometheus/` | Prometheus (via Nginx) |
-| `http://localhost:3000` | Grafana (direct) |
-| `http://localhost:9090` | Prometheus (direct) |
-| `http://localhost:9100/metrics` | Node Exporter |
-| `http://localhost:8081` | cAdvisor |
 
 ## Stopping
 
@@ -76,7 +72,7 @@ Nginx listens on port 8080 and routes traffic based on the URL path:
 - `/grafana/` proxies to Grafana on port 3000
 - `/prometheus/` proxies to Prometheus on port 9090
 
-All services communicate over a shared Docker network called `monitoring`.
+All services communicate over a shared Docker network `monitoring`.
 
 ### Prometheus Targets
 
@@ -97,7 +93,7 @@ Nginx waits for both Grafana and Prometheus to pass their health checks before s
 The Grafana datasource file is empty. After starting the stack:
 
 1. Open Grafana at `http://localhost:8080/grafana/`
-2. Log in with default credentials (`admin` / `admin`)
+2. Log in with default credentials ( user: `admin` / pass: `admin`)
 3. Go to **Connections > Data sources > Add data source**
 4. Choose **Prometheus**
 5. Set the URL to `http://prometheus:9090`
@@ -123,7 +119,6 @@ Currently empty. Used for auto-provisioning data sources on startup.
 
 - All services run inside an isolated Docker network. Only Nginx is exposed to the host.
 - Nginx config files and HTML are mounted as read-only (`:ro`) to prevent container-side changes.
-- Prometheus and Grafana direct ports (9090, 3000) are exposed for development access. In a production setup, restrict these to localhost only or remove the port mappings entirely.
 - Change the default Grafana admin password after first login.
 - Consider adding HTTPS with Let's Encrypt or a self-signed certificate for external access.
 
